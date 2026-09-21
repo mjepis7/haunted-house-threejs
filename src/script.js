@@ -18,12 +18,13 @@ const scene = new THREE.Scene()
 /**
  * House
  */
-// Temporary sphere
-const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 32, 32),
-    new THREE.MeshStandardMaterial({ roughness: 0.7 })
+// Floor
+const floor = new THREE.Mesh(
+    new THREE.PlaneGeometry(20, 20),
+    new THREE.MeshStandardMaterial()
 )
-scene.add(sphere)
+floor.rotation.x = - Math.PI * 0.5
+scene.add(floor)
 
 /**
  * Lights
