@@ -193,27 +193,27 @@ const bushMaterial = new THREE.MeshStandardMaterial({
     normalMap: bushNormalTexture,
 }) 
 
-const bush_one = new THREE.Mesh(bushGeometry, bushMaterial)
-bush_one.rotation.x = - 0.75
-bush_one.position.set(0.8, 0.2, 2.2)
-bush_one.scale.set(0.5, 0.5, 0.5)
+const bushOne = new THREE.Mesh(bushGeometry, bushMaterial)
+bushOne.rotation.x = - 0.75
+bushOne.position.set(0.8, 0.2, 2.2)
+bushOne.scale.set(0.5, 0.5, 0.5)
 
-const bush_two = new THREE.Mesh(bushGeometry, bushMaterial)
-bush_two.rotation.x = - 0.75
-bush_two.position.set(1.4, 0.1, 2.1)
-bush_two.scale.set(0.25, 0.25, 0.25)
+const bushTwo = new THREE.Mesh(bushGeometry, bushMaterial)
+bushTwo.rotation.x = - 0.75
+bushTwo.position.set(1.4, 0.1, 2.1)
+bushTwo.scale.set(0.25, 0.25, 0.25)
 
-const bush_three = new THREE.Mesh(bushGeometry, bushMaterial)
-bush_three.rotation.x = - 0.75
-bush_three.position.set(-0.8, 0.1, 2.2)
-bush_three.scale.set(0.4, 0.4, 0.4)
+const bushThree = new THREE.Mesh(bushGeometry, bushMaterial)
+bushThree.rotation.x = - 0.75
+bushThree.position.set(-0.8, 0.1, 2.2)
+bushThree.scale.set(0.4, 0.4, 0.4)
 
-const bush_four = new THREE.Mesh(bushGeometry, bushMaterial)
-bush_four.rotation.x = - 0.75
-bush_four.position.set(-1, 0.05, 2.6)
-bush_four.scale.set(0.15, 0.15, 0.15)
+const bushFour = new THREE.Mesh(bushGeometry, bushMaterial)
+bushFour.rotation.x = - 0.75
+bushFour.position.set(-1, 0.05, 2.6)
+bushFour.scale.set(0.15, 0.15, 0.15)
 
-house.add(bush_one, bush_two, bush_three, bush_four)
+house.add(bushOne, bushTwo, bushThree, bushFour)
 
 // Graves
 const graveGeometry = new THREE.BoxGeometry(0.6, 0.8, 0.2)
@@ -266,10 +266,10 @@ house.add(doorLight)
 /**
  * Ghosts
  */
-const ghost_one = new THREE.PointLight('#6600ff', 6)
-const ghost_two = new THREE.PointLight('#ff0088', 6)
-const ghost_three = new THREE.PointLight('#ff7d46', 6)
-scene.add(ghost_one, ghost_two, ghost_three)
+const ghostOne = new THREE.PointLight('#6600ff', 6)
+const ghostTwo = new THREE.PointLight('#ff0088', 6)
+const ghostThree = new THREE.PointLight('#ff7d46', 6)
+scene.add(ghostOne, ghostTwo, ghostThree)
 
 /**
  * Sizes
@@ -330,19 +330,19 @@ const tick = () =>
 
     // Update ghosts
     const ghostOneAngle = elapsedTime * 0.6
-    ghost_one.position.x = Math.cos(ghostOneAngle) * 3.5
-    ghost_one.position.z = Math.sin(ghostOneAngle) * 3.5
-    ghost_one.position.y = Math.sin(ghostOneAngle) * Math.sin(ghostOneAngle * 2.34) * Math.sin(ghostOneAngle * 3.45)
+    ghostOne.position.x = Math.cos(ghostOneAngle) * 3.5
+    ghostOne.position.z = Math.sin(ghostOneAngle) * 3.5
+    ghostOne.position.y = Math.sin(ghostOneAngle) * Math.sin(ghostOneAngle * 2.34) * Math.sin(ghostOneAngle * 3.45)
 
     const ghostTwoAngle = - elapsedTime * 0.4
-    ghost_two.position.x = Math.cos(ghostTwoAngle) * 5
-    ghost_two.position.z = Math.sin(ghostTwoAngle) * 5
-    ghost_two.position.y = Math.sin(ghostTwoAngle) * Math.sin(ghostTwoAngle * 2.34) * Math.sin(ghostTwoAngle * 3.45)
+    ghostTwo.position.x = Math.cos(ghostTwoAngle) * 5
+    ghostTwo.position.z = Math.sin(ghostTwoAngle) * 5
+    ghostTwo.position.y = Math.sin(ghostTwoAngle) * Math.sin(ghostTwoAngle * 2.34) * Math.sin(ghostTwoAngle * 3.45)
 
-    const ghostThrreeAngle = elapsedTime * 0.8
-    ghost_three.position.x = Math.cos(ghostThrreeAngle) * 6.5
-    ghost_three.position.z = Math.sin(ghostThrreeAngle) * 6.5
-    ghost_three.position.y = Math.sin(ghostThrreeAngle) * Math.sin(ghostThrreeAngle * 2.34) * Math.sin(ghostThrreeAngle * 3.45)
+    const ghostThreeAngle = elapsedTime * 0.8
+    ghostThree.position.x = Math.cos(ghostThreeAngle) * 6.5
+    ghostThree.position.z = Math.sin(ghostThreeAngle) * 6.5
+    ghostThree.position.y = Math.sin(ghostThreeAngle) * Math.sin(ghostThreeAngle * 2.34) * Math.sin(ghostThreeAngle * 3.45)
     
     // Update controls
     controls.update()
