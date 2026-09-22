@@ -1,8 +1,21 @@
 import * as THREE from 'three'
+import GUI from 'lil-gui'
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { Sky } from 'three/addons/objects/Sky.js'
 import { Timer } from 'three/addons/misc/Timer.js'
+
+/**
+ * Debug
+ */
+const gui = new GUI({title: 'Ambient Controls', width: 280, closeFolders: true})
+
+const global = {}
+
+const fogFolder = gui.addFolder('Fog')
+const moonFolder = gui.addFolder('Moonlight')
+const doorFolder = gui.addFolder('Door Light')
+const ghostFolder = gui.addFolder('Ghosts')
 
 /**
  * Base
@@ -245,26 +258,84 @@ for (let i = 0; i < 30; i++) {
  * Lights
  */
 // Ambient light
-const ambientLight = new THREE.AmbientLight('#86cdff', 0.275)
+global.ambientColor = '#86cdff'
+
+const ambientLight = new THREE.AmbientLight(global.ambientColor, 0.275)
 scene.add(ambientLight)
 
+moonFolder
+    .addColor(global, 'ambientColor')
+    .name('ambient color')
+    .onChange((value) => {
+        ambientLight.color.set(value)
+    })
+moonFolder.add(ambientLight, 'intensity').min(0).max(2).step(0.01).name('ambient intensity')
+
 // Directional light
-const directionalLight = new THREE.DirectionalLight('#86cdff', 1)
+global.directionalColor = '#86cdff'
+
+const directionalLight = new THREE.DirectionalLight(global.directionalColor, 1)
 directionalLight.position.set(3, 2, -8)
 scene.add(directionalLight)
 
+moonFolder
+    .addColor(global, 'directionalColor')
+    .name('directional color')
+    .onChange((value) => {
+        directionalLight.color.set(value)
+    })
+moonFolder.add(directionalLight, 'intensity').min(0).max(5).step(0.01).name('directional intensity')
+
 // Door light
-const doorLight = new THREE.PointLight('#ff5c46', 5)
+global.doorColor = '#ff5c46'
+
+const doorLight = new THREE.PointLight(global.doorColor, 5)
 doorLight.position.set(0, 2.2, 2.5)
 house.add(doorLight)
+
+doorFolder
+    .addColor(global, 'doorColor')
+    .name('color')
+    .onChange((value) => {
+        doorLight.color.set(value)
+    })
+doorFolder.add(doorLight, 'intensity').min(0).max(15).step(0.01).name('intensity')
 
 /**
  * Ghosts
  */
-const ghostOne = new THREE.PointLight('#6600ff', 6)
-const ghostTwo = new THREE.PointLight('#ff0088', 6)
-const ghostThree = new THREE.PointLight('#ff7d46', 6)
+const ghostParams = { intensity: 6, speed: 1 }
+
+global.ghostOneColor = '#6600ff'
+global.ghostTwoColor = '#ff0088'
+global.ghostThreeColor = '#ff7d46'
+
+const ghostOne = new THREE.PointLight(global.ghostOneColor, ghostParams.intensity)
+const ghostTwo = new THREE.PointLight(global.ghostTwoColor, ghostParams.intensity)
+const ghostThree = new THREE.PointLight(global.ghostThreeColor, ghostParams.intensity)
 scene.add(ghostOne, ghostTwo, ghostThree)
+
+ghostFolder
+    .addColor(global, 'ghostOneColor')
+    .name('ghost 1')
+    .onChange((value) => {
+        ghostOne.color.set(value)
+    })
+ghostFolder
+    .addColor(global, 'ghostTwoColor')
+    .name('ghost 2')
+    .onChange((value) => {
+        ghostTwo.color.set(value)
+    })
+ghostFolder
+    .addColor(global, 'ghostThreeColor')
+    .name('ghost 3')
+    .onChange((value) => {
+        ghostThree.color.set(value)
+    })
+ghostFolder.add(ghostParams, 'intensity').min(0).max(20).step(0.1).name('intensity')
+    .onChange(v => { ghostOne.intensity = ghostTwo.intensity = ghostThree.intensity = v })
+ghostFolder.add(ghostParams, 'speed').min(0).max(3).step(0.01).name('speed')
 
 /**
  * Sizes
@@ -372,7 +443,17 @@ sky.material.uniforms.sunPosition.value.set(0.3, -0.038, -0.95)
 /**
  * Fog
  */
-scene.fog = new THREE.FogExp2('#04343f', 0.08)
+global.fogColor = '#04343f'
+
+scene.fog = new THREE.FogExp2(global.fogColor, 0.08)
+
+fogFolder
+    .addColor(global, 'fogColor')
+    .name('color')
+    .onChange((value) => {
+        scene.fog.color.set(value)
+    })
+fogFolder.add(scene.fog, 'density').min(0).max(0.3).step(0.001).name('density')
 
 /**
  * Animate
@@ -386,17 +467,17 @@ const tick = () =>
     const elapsedTime = timer.getElapsed()
 
     // Update ghosts
-    const ghostOneAngle = elapsedTime * 0.6
+    const ghostOneAngle = elapsedTime * 0.6 * ghostParams.speed
     ghostOne.position.x = Math.cos(ghostOneAngle) * 3.5
     ghostOne.position.z = Math.sin(ghostOneAngle) * 3.5
     ghostOne.position.y = Math.sin(ghostOneAngle) * Math.sin(ghostOneAngle * 2.34) * Math.sin(ghostOneAngle * 3.45)
 
-    const ghostTwoAngle = - elapsedTime * 0.4
+    const ghostTwoAngle = - elapsedTime * 0.4 * ghostParams.speed
     ghostTwo.position.x = Math.cos(ghostTwoAngle) * 5
     ghostTwo.position.z = Math.sin(ghostTwoAngle) * 5
     ghostTwo.position.y = Math.sin(ghostTwoAngle) * Math.sin(ghostTwoAngle * 2.34) * Math.sin(ghostTwoAngle * 3.45)
 
-    const ghostThreeAngle = elapsedTime * 0.8
+    const ghostThreeAngle = elapsedTime * 0.8 * ghostParams.speed
     ghostThree.position.x = Math.cos(ghostThreeAngle) * 6.5
     ghostThree.position.z = Math.sin(ghostThreeAngle) * 6.5
     ghostThree.position.y = Math.sin(ghostThreeAngle) * Math.sin(ghostThreeAngle * 2.34) * Math.sin(ghostThreeAngle * 3.45)
